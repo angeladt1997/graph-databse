@@ -1,0 +1,1 @@
+This repository should serve as the backend of the app Choreo-Graph. The repo is still under construction!
