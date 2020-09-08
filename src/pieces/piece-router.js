@@ -1,9 +1,9 @@
 const express = require('express')
 const path = require('path')
-const CommentsService = require('./comments-service')
+const PiecesService = require('./piece-service')
 const { requireAuth } = require('../middleware/jwt-auth')
 
-const commentsRouter = express.Router()
+const piecesRouter = express.Router()
 const jsonBodyParser = express.json()
 
 piecesRouter
@@ -33,4 +33,4 @@ piecesRouter
       .catch(next)
     })
 
-module.exports = PiecesRouter
+module.exports = piecesRouter
