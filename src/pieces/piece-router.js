@@ -6,31 +6,31 @@ const { requireAuth } = require('../middleware/jwt-auth')
 const commentsRouter = express.Router()
 const jsonBodyParser = express.json()
 
-stepsRouter
+piecesRouter
   .route('/')
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const { graph_pieces, text } = req.body
     const steps = { graph_pieces, text }
 
-    for (const [key, value] of Object.entries(steps))
+    for (const [key, value] of Object.entries(pieces))
       if (value == null)
         return res.status(400).json({
           error: `Missing '${key}' in request body`
         })
 
-    newComment.user_id = req.user.id
+    newPiece.user_id = req.user.id
 
-    stepsService.insertStep(
+    piecesService.insertPiece(
       req.app.get('db'),
-      newStep`
+      `newPiece`
     )
       .then(comment => {
         res
           .status(201)
-          .location(path.posix.join(req.originalUrl, `/${steps.id}`))
+          .location(path.posix.join(req.originalUrl, `/${Pieces.id}`))
           .json(stepsService.serializeSteps(steps))
       })
       .catch(next)
     })
 
-module.exports = stepsRouter
+module.exports = PiecesRouter

@@ -1,6 +1,6 @@
-INSERT INTO performanceSpace (id, piece, stage)
+INSERT INTO performanceSpace (id, stage)
 VALUES
-    ('1','2112','Studio 3' ),
-    ('2','Baired', 'Main Stage'),
-    ('3','2112', 'Blackbox Theater'),
-    ('4', 'MSLCRS(SOLO)', 'STAGE 6')
+    ('1','Studio 3' ),
+    ('2','Main Stage'),
+    ('3','Blackbox Theater'),
+    ('4','STAGE 6')
