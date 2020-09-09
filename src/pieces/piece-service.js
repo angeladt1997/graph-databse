@@ -4,17 +4,11 @@ const Treeize = require('treeize')
 const PiecesService = {
   getAllPieces(db) {
     return db
-      .from('choreograph_assignedPieces AS pcs')
+      .from('assignedPieces AS pcs')
       .select(
         'pcs.id',
         'pcs.title',
         ...userFields,
-        // db.raw(
-        //   `count(DISTINCT rev) AS number_of_reviews`
-        // ),
-        // db.raw(
-        //   `AVG(rev.rating) AS average_review_rating`
-        // ),
       )
       .leftJoin(
         'piece_steps AS steps',
@@ -22,7 +16,7 @@ const PiecesService = {
         'steps.piece_id',
       )
       .leftJoin(
-        'choreograph_users AS usr',
+        'graphUser AS usr',
         'pcs.user_id',
         'usr.id',
       )
@@ -59,10 +53,6 @@ const PiecesService = {
 
   serializePiece(Piece) {
     const pieceTree = new Treeize()
-
-    // Some light hackiness to allow for the fact that `treeize`
-    // only accepts arrays of objects, and we want to use a single
-    // object.
     const pieceData = pieceTree.grow([ piece ]).getData()[0]
 
     return {
@@ -79,10 +69,6 @@ const PiecesService = {
 
   serializePieceSteps(steps) {
     const reviewTree = new Treeize()
-
-    // Some light hackiness to allow for the fact that `treeize`
-    // only accepts arrays of objects, and we want to use a single
-    // object.
     const stepData = stepTree.grow([ step ]).getData()[0]
 
     return {

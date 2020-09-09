@@ -7,10 +7,10 @@ const piecesRouter = express.Router()
 const jsonBodyParser = express.json()
 
 piecesRouter
-  .route('/')
+  .route('/piece')
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const { graph_pieces, text } = req.body
-    const steps = { graph_pieces, text }
+    const pieces = { assignedPieces, text }
 
     for (const [key, value] of Object.entries(pieces))
       if (value == null)
