@@ -5,8 +5,8 @@ const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const piecesRouter = require('./pieces/piece-router')
-const authRouter = require('./auth-Router')
-const usersRouter = require('./users-router')
+const authRouter = require('./auth/auth-router')
+const usersRouter = require('./users/users-router')
 const app = express()
 
 app.use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common', {

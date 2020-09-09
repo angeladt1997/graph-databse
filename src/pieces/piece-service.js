@@ -37,7 +37,7 @@ const PiecesService = {
 
   getStepsForPieces(db, pieces_id) {
     return db
-      .from('choreograph_steps AS stp')
+      .from('pieceSteps AS stp')
       .select(
         'stp.id',
         'stp.title',
@@ -46,7 +46,7 @@ const PiecesService = {
       )
       .where('stp.piece_id', piece_id)
       .leftJoin(
-        'choreograph_users AS usr',
+        'graph_users AS usr',
         'stp.user_id',
         'usr.id',
       )
@@ -90,7 +90,7 @@ const PiecesService = {
       title: stepData.title,
       content: stepData.content,
       piece_id: stepData.piece_id,
-      user: reviewData.user || {},
+      user: stepData.user || {},
     }
   },
 }
