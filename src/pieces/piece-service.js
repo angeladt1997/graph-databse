@@ -3,7 +3,7 @@ const xss = require('xss')
 const PiecesService = {
   getAllPieces(db) {
     return db
-      .from('choreograph_assignedPieces AS pcs')
+      .from('choreograph_assignedpieces AS pcs')
       .select(
         'pcs.id',
         'pcs.userName',
@@ -19,12 +19,12 @@ const PiecesService = {
         ),
       )
       .leftJoin(
-        'choreograph_pieceSteps AS stp',
+        'choreograph_piecesteps AS stp',
         'pcs.id',
         'stp.pcs_id',
       )
       .leftJoin(
-        'choreograph_graphUsers AS usr',
+        'choreograph_graphusers AS usr',
         'pcs._id',
         'usr.id',
       )
@@ -39,7 +39,7 @@ const PiecesService = {
 
   getStepsForPieces(db, pieces_id) {
     return db
-      .from('choreograph_pieceSteps AS stp ')
+      .from('choreograph_piecesteps AS stp ')
       .select(
         'stp.id',
         'stp.title',
@@ -59,7 +59,7 @@ const PiecesService = {
       )
       .where('stp.piece_id', piece_id)
       .leftJoin(
-        'choreograph_graphUsers AS usr',
+        'choreograph_graphusers AS usr',
         'stp.user_id',
         'usr.id',
       )
@@ -67,16 +67,16 @@ const PiecesService = {
   },
 
   serializePiece(piece) {
-    const { assignedPieces } = piece
+    const { assignedpieces } = piece
     return {
-      id: assignedPieces.id,
-      user: xss(assignedPieces.user),
-      piece: xss(assignedPieces.piece),
-      number_of_steps: Number(pieceSteps.content) || 0,
+      id: assignedpieces.id,
+      user: xss(assignedpieces.user),
+      piece: xss(assignedpieces.piece),
+      number_of_steps: Number(piecesteps.content) || 0,
       piece: {
         id: assignedPieces.id,
-        user_name: graphUser.title,
-        full_name: graphUser.person
+        user_name: graphuser.title,
+        full_name: graphuser.person
         },
     }
   },
@@ -84,13 +84,13 @@ const PiecesService = {
   serializePieceSteps(steps) {
     const { user } = steps
     return {
-      id: pieceSteps.id,
+      id: piecesteps.id,
       piece_id: steps.piece_id,
       content: xss(steps.content),
       user: {
-        id: graphUser.id,
-        user_name: graphUser.title,
-        full_name: graphUser.person,
+        id: graphuser.id,
+        user_name: graphuser.title,
+        full_name: graphuser.person,
       },
     }
   },

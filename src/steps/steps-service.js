@@ -3,7 +3,7 @@ const xss = require('xss')
 const StepsService = {
   getById(db, id) {
     return db
-      .from('choreograph_pieceSteps AS stp')
+      .from('choreograph_piecesteps AS stp')
       .select(
         'stp.id',
         'stp.title',
@@ -23,7 +23,7 @@ const StepsService = {
         )
       )
       .leftJoin(
-        'choreograph_graphUsers AS usr',
+        'choreograph_graphusers AS usr',
         'stp.user_id',
         'usr.id',
       )
@@ -34,10 +34,10 @@ const StepsService = {
   insertStep(db, newStep                                                                                                                                                  ) {
     return db
       .insert(newStep)
-      .into('choreograph_pieceSteps')
+      .into('choreograph_piecesteps')
       .returning('*')
-      .then(([pieceSteps]) => pieceSteps)
-      .then(pieceSteps =>
+      .then(([piecesteps]) => piecesteps)
+      .then(piecesteps =>
         StepsService.getById(db, step.id)
       )
   },
@@ -45,14 +45,14 @@ const StepsService = {
   serializeStep(step) {
     const { user } = step
     return {
-      id: pieceSteps.id,
-      title: xss(pieceSteps.title),
-      content: pieceSteps.content,
-      assignedPieces_id: pieceSteps.assignedPieces_id,
+      id: piecesteps.id,
+      title: xss(piecesteps.title),
+      content: piecesteps.content,
+      assignedpieces_id: piecesteps.assignedpieces_id,
       user: {
         id: user.id,
-        user_name: graphUser.title,
-        full_name: graphUser.person,
+        user_name: graphuser.title,
+        full_name: graphuser.person,
       },
     }
   }
