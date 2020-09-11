@@ -17,14 +17,14 @@ piecesRouter
 piecesRouter
   .route('/:assignedPieces_id')
   .all(requireAuth)
-  .all(checkPieceExists)
+  .all(checkAssignedPiecesExists)
   .get((req, res) => {
     res.json(PiecesService.serializePiece(res.pieces))
   })
 
 piecesRouter.route('/:AssignedPieces_id/steps/')
   .all(requireAuth)
-  .all(checkPieceExists)
+  .all(checkAssignedPiecesExists)
   .get((req, res, next) => {
     PiecesService.getStepsForPieces(
       req.app.get('db'),
@@ -37,7 +37,7 @@ piecesRouter.route('/:AssignedPieces_id/steps/')
   })
 
 /* async/await syntax for promises */
-async function checkPiceExists(req, res, next) {
+async function checkAssignedPiecesExists(req, res, next) {
   try {
     const article = await PiecesService.getById(
       req.app.get('db'),
@@ -56,4 +56,4 @@ async function checkPiceExists(req, res, next) {
   }
 }
 
-module.exports = PiecesRouter
+module.exports = piecesRouter

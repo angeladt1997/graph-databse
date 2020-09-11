@@ -29,7 +29,7 @@ stepsRouter
           .location(path.posix.join(req.originalUrl, `/${step.id}`))
           .json(StepsService.serializeStep(step))
       })
-      .catch(next)
+      .catch(next))
     })
 
 module.exports = stepsRouter
