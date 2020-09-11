@@ -21,11 +21,11 @@ const PiecesService = {
       .leftJoin(
         'choreograph_piecesteps AS stp',
         'pcs.id',
-        'stp.pcs_id',
+        'usr.id',
       )
       .leftJoin(
         'choreograph_graphusers AS usr',
-        'pcs._id',
+        'pcs.usr_id',
         'usr.id',
       )
       .groupBy('pcs.id', 'usr.id')
@@ -82,7 +82,7 @@ const PiecesService = {
   },
 
   serializePieceSteps(steps) {
-    const { user } = steps
+    const { graphuser } = steps
     return {
       id: piecesteps.id,
       piece_id: steps.piece_id,
