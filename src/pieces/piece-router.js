@@ -1,5 +1,5 @@
 const express = require('express')
-const PiecesService = require('./piece-services')
+const PiecesService = require('./piece-service')
 const { requireAuth } = require('../middleware/jwt-auth')
 
 const piecesRouter = express.Router()
