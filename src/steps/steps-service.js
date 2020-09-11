@@ -38,7 +38,7 @@ const StepsService = {
       .returning('*')
       .then(([piecesteps]) => piecesteps)
       .then(piecesteps =>
-        StepsService.getById(db, step.id)
+        StepsService.getById(db, piecesteps.id)
       )
   },
 

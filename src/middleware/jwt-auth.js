@@ -17,11 +17,11 @@ function requireAuth(req, res, next) {
       req.app.get('db'),
       payload.sub,
     )
-      .then(user => {
-        if (!user)
+      .then(graphuser => {
+        if (!graphuser)
           return res.status(401).json({ error: 'Unauthorized request' })
 
-        req.user = user
+        req.graphuser = graphuser
         next()
       })
       .catch(err => {

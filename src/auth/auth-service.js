@@ -1,6 +1,6 @@
 const AuthService = {
     getUserWithUserName(db, userName) {
-      return db('graphUsers')
+      return db('graphusers')
         .where({ userName })
         .first()
     },
