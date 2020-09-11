@@ -33,7 +33,7 @@ VALUES
     ('2','Baired', 'Dancers solo onto stage from opposite downstage wings, one mover at a time with a 30 second space of time between enterances'),
     ('3', 'MSLCRS(SOLO)', 'Dancer (soloist) starts downstage in the chair facing upstage with a large mirror covering the back sham');
 
-INSERT INTO assignedPieces (id, user, piece)
+INSERT INTO assignedPieces (id, userName, piece)
 VALUES
     ('1', 'GrapherOne', '2112'),
     ('2', 'GrapherTwo', 'Baired'),

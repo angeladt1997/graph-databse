@@ -6,13 +6,13 @@ const PiecesService = {
       .from('choreograph_assignedPieces AS pcs')
       .select(
         'pcs.id',
-        'pcs.user',
+        'pcs.userName',
         'pcs.piece',
         db.raw(
           `json_strip_nulls(
             json_build_object(
               'id', usr.id,
-              'user_name', usr.user,
+              'user_name', usr.userName,
               'full_name', usr.person,
             )
           ) AS "author"`
