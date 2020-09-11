@@ -26,7 +26,7 @@ stepsRouter
       .then(step => {
         res
           .status(201)
-          .location(path.posix.join(req.originalUrl, `/${step.id}`))
+          .location(path.posix.join(req.originalUrl, `/${peicesteps.id}`))
           .json(StepsService.serializeStep(step))
       })
       .catch(next))

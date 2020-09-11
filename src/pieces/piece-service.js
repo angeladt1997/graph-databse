@@ -15,7 +15,7 @@ const PiecesService = {
               'user_name', usr.userName,
               'full_name', usr.person,
             )
-          ) AS "author"`
+          ) AS "user"`
         ),
       )
       .leftJoin(
