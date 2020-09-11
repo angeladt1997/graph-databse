@@ -1,5 +1,5 @@
 {
-	"name": "graph-server",
+	"name": "choreograph",
 	"version": "0.0.1",
 	"description": "Starter code for learning about authentication.",
 	"private": true,

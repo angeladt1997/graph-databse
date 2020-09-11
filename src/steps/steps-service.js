@@ -16,8 +16,7 @@ const StepsService = {
                 SELECT
                   usr.id,
                   usr.title,
-                  usr.full,
-
+                  usr.person
               ) tmp)
             )
           ) AS "user"`
@@ -53,7 +52,7 @@ const StepsService = {
       user: {
         id: user.id,
         user_name: graphUser.title,
-        full_name: graphUser.full,
+        full_name: graphUser.person,
       },
     }
   }

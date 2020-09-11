@@ -12,11 +12,8 @@ const PiecesService = {
           `json_strip_nulls(
             json_build_object(
               'id', usr.id,
-              'user_name', usr.user_name,
-              'full_name', usr.full_name,
-              'nickname', usr.nickname,
-              'date_created', usr.date_created,
-              'date_modified', usr.date_modified
+              'user_name', usr.user,
+              'full_name', usr.person,
             )
           ) AS "author"`
         ),
@@ -54,7 +51,7 @@ const PiecesService = {
                 SELECT
                   usr.id,
                   usr.user,
-                  usr.full
+                  usr.person
               ) tmp)
             )
           ) AS "user"`
@@ -79,7 +76,7 @@ const PiecesService = {
       piece: {
         id: assignedPieces.id,
         user_name: graphUser.title,
-        full_name: graphUser.full
+        full_name: graphUser.person
         },
     }
   },
@@ -93,7 +90,7 @@ const PiecesService = {
       user: {
         id: graphUser.id,
         user_name: graphUser.title,
-        full_name: graphUser.full,
+        full_name: graphUser.person,
       },
     }
   },

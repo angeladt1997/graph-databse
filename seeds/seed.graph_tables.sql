@@ -53,12 +53,12 @@ VALUES
     ('3', 'GrapherThree', 'passwordThree'),
     ('4', 'GrapherFour', 'passwordFour');
 
-INSERT INTO graphUsers (id, title, full)
+INSERT INTO graphUsers (id, title, person)
 VALUES
     ('1', 'GrapherOne', 'Grapher One'),
     ('2', 'GrapherTwo', 'Grapher Two'),
     ('3', 'GrapherThree', 'Grapher Three'),
     ('4', 'GrapherFour', 'Grapher Four');
-;
+
 
 COMMIT;
