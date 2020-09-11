@@ -1,23 +1,34 @@
 const xss = require('xss')
-const Treeize = require('treeize')
 
 const PiecesService = {
   getAllPieces(db) {
     return db
-      .from('assignedPieces AS pcs')
+      .from('choreograph_assignedPieces AS pcs')
       .select(
         'pcs.id',
-        'pcs.title',
-        ...userFields,
+        'pcs.user',
+        'pcs.piece',
+        db.raw(
+          `json_strip_nulls(
+            json_build_object(
+              'id', usr.id,
+              'user_name', usr.user_name,
+              'full_name', usr.full_name,
+              'nickname', usr.nickname,
+              'date_created', usr.date_created,
+              'date_modified', usr.date_modified
+            )
+          ) AS "author"`
+        ),
       )
       .leftJoin(
-        'piece_steps AS steps',
-        'piece.id',
-        'steps.piece_id',
+        'choreograph_pieceSteps AS stp',
+        'pcs.id',
+        'stp.pcs_id',
       )
       .leftJoin(
-        'graphUser AS usr',
-        'pcs.user_id',
+        'choreograph_graphUsers AS usr',
+        'pcs._id',
         'usr.id',
       )
       .groupBy('pcs.id', 'usr.id')
@@ -31,60 +42,61 @@ const PiecesService = {
 
   getStepsForPieces(db, pieces_id) {
     return db
-      .from('pieceSteps AS stp')
+      .from('choreograph_pieceSteps AS stp ')
       .select(
         'stp.id',
         'stp.title',
         'stp.content',
-        ...userFields,
+        db.raw(
+          `json_strip_nulls(
+            row_to_json(
+              (SELECT tmp FROM (
+                SELECT
+                  usr.id,
+                  usr.user,
+                  usr.full
+              ) tmp)
+            )
+          ) AS "user"`
+        )
       )
       .where('stp.piece_id', piece_id)
       .leftJoin(
-        'graph_users AS usr',
+        'choreograph_graphUsers AS usr',
         'stp.user_id',
         'usr.id',
       )
       .groupBy('stp.id', 'usr.id')
   },
 
-  serializePieces(pieces) {
-    return pieces.map(this.serializePiece)
-  },
-
-  serializePiece(Piece) {
-    const pieceTree = new Treeize()
-    const pieceData = pieceTree.grow([ piece ]).getData()[0]
-
+  serializePiece(piece) {
+    const { assignedPieces } = piece
     return {
-      id: pieceData.id,
-      title: xss(piceData.title),
-      user: thingData.user || {},
-      number_of_steps: Number(pieceData.number_of_steps) || 0,
+      id: assignedPieces.id,
+      user: xss(assignedPieces.user),
+      piece: xss(assignedPieces.piece),
+      number_of_steps: Number(pieceSteps.content) || 0,
+      piece: {
+        id: assignedPieces.id,
+        user_name: graphUser.title,
+        full_name: graphUser.full
+        },
     }
   },
 
   serializePieceSteps(steps) {
-    return steps.map(this.serializePieceSteps)
-  },
-
-  serializePieceSteps(steps) {
-    const reviewTree = new Treeize()
-    const stepData = stepTree.grow([ step ]).getData()[0]
-
+    const { user } = steps
     return {
-      id: stepData.id,
-      title: stepData.title,
-      content: stepData.content,
-      piece_id: stepData.piece_id,
-      user: stepData.user || {},
+      id: pieceSteps.id,
+      piece_id: steps.piece_id,
+      content: xss(steps.content),
+      user: {
+        id: graphUser.id,
+        user_name: graphUser.title,
+        full_name: graphUser.full,
+      },
     }
   },
 }
-
-const userFields = [
-  'usr.id AS user:id',
-  'usr.user_name AS user:user_name',
-  'usr.full_name AS user:full_name',
-]
 
 module.exports = PiecesService

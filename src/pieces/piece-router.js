@@ -1,36 +1,59 @@
 const express = require('express')
-const path = require('path')
-const PiecesService = require('./piece-service')
+const PiecesService = require('./piece-services')
 const { requireAuth } = require('../middleware/jwt-auth')
 
 const piecesRouter = express.Router()
-const jsonBodyParser = express.json()
 
 piecesRouter
-  .route('/piece')
-  .post(requireAuth, jsonBodyParser, (req, res, next) => {
-    const { graph_pieces, text } = req.body
-    const pieces = { assignedPieces, text }
-
-    for (const [key, value] of Object.entries(pieces))
-      if (value == null)
-        return res.status(400).json({
-          error: `Missing '${key}' in request body`
-        })
-
-    newPiece.user_id = req.user.id
-
-    piecesService.insertPiece(
-      req.app.get('db'),
-      `newPiece`
-    )
-      .then(comment => {
-        res
-          .status(201)
-          .location(path.posix.join(req.originalUrl, `/${Pieces.id}`))
-          .json(stepsService.serializeSteps(steps))
+  .route('/')
+  .get((req, res, next) => {
+    PiecesService.getAllPieces(req.app.get('db'))
+      .then(pieces => {
+        res.json(pieces.map(PiecesService.serializePiece))
       })
       .catch(next)
-    })
+  })
 
-module.exports = piecesRouter
+piecesRouter
+  .route('/:assignedPieces_id')
+  .all(requireAuth)
+  .all(checkPieceExists)
+  .get((req, res) => {
+    res.json(PiecesService.serializePiece(res.pieces))
+  })
+
+piecesRouter.route('/:AssignedPieces_id/steps/')
+  .all(requireAuth)
+  .all(checkPieceExists)
+  .get((req, res, next) => {
+    PiecesService.getStepsForPieces(
+      req.app.get('db'),
+      req.params.pieces_id
+    )
+      .then(steps => {
+        res.json(steps.map(PiecesService.serializePieceSteps))
+      })
+      .catch(next)
+  })
+
+/* async/await syntax for promises */
+async function checkPiceExists(req, res, next) {
+  try {
+    const article = await PiecesService.getById(
+      req.app.get('db'),
+      req.params.pieces_id
+    )
+
+    if (!piece)
+      return res.status(404).json({
+        error: `Piece doesn't exist`
+      })
+
+    res.pice = piece
+    next()
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = PiecesRouter
