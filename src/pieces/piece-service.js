@@ -3,30 +3,29 @@ const xss = require('xss')
 const PiecesService = {
   getAllPieces(db) {
     return db
-      .from('choreograph_assignedpieces AS pcs')
+      .from('assignedpieces AS pcs')
       .select(
-        'pcs.id',
         'pcs.userName',
         'pcs.piece',
         db.raw(
           `json_strip_nulls(
             json_build_object(
-              'id', usr.id,
               'user_name', usr.userName,
-              'full_name', usr.person,
+              'full_name', usr.person
             )
           ) AS "user"`
         ),
       )
       .leftJoin(
-        'choreograph_piecesteps AS stp',
+        'piecesteps AS stp',
         'pcs.id',
         'usr.id',
       )
       .leftJoin(
-        'choreograph_graphusers AS usr',
+        'graphusers AS usr',
         'pcs.usr_id',
         'usr.id',
+
       )
       .groupBy('pcs.id', 'usr.id')
   },
@@ -39,29 +38,25 @@ const PiecesService = {
 
   getStepsForPieces(db, pieces_id) {
     return db
-      .from('choreograph_piecesteps AS stp ')
+      .from('piecesteps AS stp ')
       .select(
-        'stp.id',
         'stp.title',
         'stp.content',
         db.raw(
           `json_strip_nulls(
             row_to_json(
-              (SELECT tmp FROM (
-                SELECT
-                  usr.id,
+              (SELECT * FROM (
+                SELECT * FROM
                   usr.user,
                   usr.person
-              ) tmp)
+              ) graphuser)
             )
           ) AS "user"`
         )
       )
       .where('stp.piece_id', piece_id)
       .leftJoin(
-        'choreograph_graphusers AS usr',
-        'stp.user_id',
-        'usr.id',
+        'graphusers AS usr',
       )
       .groupBy('stp.id', 'usr.id')
   },

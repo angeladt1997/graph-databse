@@ -3,18 +3,16 @@ const xss = require('xss')
 const StepsService = {
   getById(db, id) {
     return db
-      .from('choreograph_piecesteps AS stp')
+      .from('piecesteps AS stp')
       .select(
-        'stp.id',
+
         'stp.title',
         '.stp_content',
-        'stp.piece_id',
+
         db.raw(
           `json_strip_nulls(
             row_to_json(
               (SELECT tmp FROM (
-                SELECT
-                  usr.id,
                   usr.title,
                   usr.person
               ) tmp)
@@ -23,7 +21,7 @@ const StepsService = {
         )
       )
       .leftJoin(
-        'choreograph_graphusers AS usr',
+        'graphusers AS usr',
         'stp.user_id',
         'usr.id',
       )
@@ -34,7 +32,7 @@ const StepsService = {
   insertStep(db, newStep                                                                                                                                                  ) {
     return db
       .insert(newStep)
-      .into('choreograph_piecesteps')
+      .into('piecesteps')
       .returning('*')
       .then(([piecesteps]) => piecesteps)
       .then(piecesteps =>

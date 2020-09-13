@@ -12,46 +12,46 @@ TRUNCATE
     
 
 
-INSERT INTO costume (id, piece, costume)
+INSERT INTO costume (piece, costume)
 VALUES
-    ('1','2112','Black High Wasted Shorts/White Halter Turtleneck Top' ),
-    ('2','Baired', 'Nude Shorts'),
-    ('3','2112', 'Black High Wasted Shorts/White Halter Turtleneck Top'),
-    ('4', 'MSLCRS(SOLO)', 'Balck Velcro Leo');
+    ('2112','Black High Wasted Shorts/White Halter Turtleneck Top' ),
+    ('Baired', 'Nude Shorts'),
+    ('2112', 'Black High Wasted Shorts/White Halter Turtleneck Top'),
+    ( 'MSLCRS(SOLO)', 'Balck Velcro Leo');
 
 
-INSERT INTO piecesteps (id, title, content)
+INSERT INTO piecesteps  (title, content)
 VALUES
-    ('1','2112','One dance initiates snapping. All other dancers slowly join in. Dancer who starts snaps gives a loud clap to stop it' ),
-    ('2','Baired', 'Dancers solo onto stage from opposite downstage wings, one mover at a time with a 30 second space of time between enterances'),
-    ('3', 'MSLCRS(SOLO)', 'Dancer (soloist) starts downstage in the chair facing upstage with a large mirror covering the back sham');
+    ('2112','One dance initiates snapping. All other dancers slowly join in. Dancer who starts snaps gives a loud clap to stop it' ),
+    ('Baired', 'Dancers solo onto stage from opposite downstage wings, one mover at a time with a 30 second space of time between enterances'),
+    ( 'MSLCRS(SOLO)', 'Dancer (soloist) starts downstage in the chair facing upstage with a large mirror covering the back sham');
 
-INSERT INTO assignedpieces (id, userName, piece)
+INSERT INTO assignedpieces  (userName, piece)
 VALUES
-    ('1', 'GrapherOne', '2112'),
-    ('2', 'GrapherTwo', 'Baired'),
-    ('3', 'GrapherThree','2112'),
-    ('4', 'GrapherFour', 'MSLCRS(SOLO)');
+    ( 'GrapherOne', '2112'),
+    ( 'GrapherTwo', 'Baired'),
+    ( 'GrapherThree','2112'),
+    ( 'GrapherFour', 'MSLCRS(SOLO)');
 
-INSERT INTO pieceoptions (id, title)
+INSERT INTO pieceoptions (title)
 VALUES
-    ('1','2112'),
-    ('2','Baired'),
-    ('3', 'MSLCRS(SOLO)');
+    ('2112'),
+    ('Baired'),
+    ( 'MSLCRS(SOLO)');
 
-INSERT INTO graphpasswords (id, title, content)
+INSERT INTO graphpasswords (title, content)
 VALUES
-    ('1', 'GrapherOne', 'passwordOne'),
-    ('2', 'GrapherTwo', 'passwordTwo'),
-    ('3', 'GrapherThree', 'passwordThree'),
-    ('4', 'GrapherFour', 'passwordFour');
+    ('GrapherOne', 'passwordOne'),
+    ('GrapherTwo', 'passwordTwo'),
+    ('GrapherThree', 'passwordThree'),
+    ('GrapherFour', 'passwordFour');
 
-INSERT INTO graphusers (id, title, person)
+INSERT INTO graphusers (title, person)
 VALUES
-    ('1', 'GrapherOne', 'Grapher One'),
-    ('2', 'GrapherTwo', 'Grapher Two'),
-    ('3', 'GrapherThree', 'Grapher Three'),
-    ('4', 'GrapherFour', 'Grapher Four');
+    ('GrapherOne', 'Grapher One'),
+    ('GrapherTwo', 'Grapher Two'),
+    ('GrapherThree', 'Grapher Three'),
+    ('GrapherFour', 'Grapher Four');
 
 
 COMMIT;
