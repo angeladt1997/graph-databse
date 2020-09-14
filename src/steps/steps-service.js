@@ -3,11 +3,11 @@ const xss = require('xss')
 const StepsService = {
   getById(db, id) {
     return db
-      .from('piecesteps AS stp')
+      .from('piecesteps')
       .select(
 
-        'stp.title',
-        '.stp.content',
+        'piecesteps.title',
+        '.piecesteps.content',
 
         db.raw(
           `json_strip_nulls(
@@ -21,11 +21,11 @@ const StepsService = {
         )
       )
       .leftJoin(
-        'graphusers AS usr',
-        'stp.user_id',
-        'usr.id',
+        'graphusers',
+        'stp.graphusers_id',
+        'graphusers.id',
       )
-      .where('stp.id', id)
+      .where('piecesteps.id', id)
       .first()
   },
 

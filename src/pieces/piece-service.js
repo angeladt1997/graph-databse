@@ -3,31 +3,31 @@ const xss = require('xss')
 const PiecesService = {
   getAllPieces(db) {
     return db
-      .from('assignedpieces AS pcs')
+      .from('assignedpieces')
       .select(
-        'pcs.userName',
-        'pcs.piece',
+        'assignedpieces.userName',
+        'assignedpieces.piece',
         db.raw(
           `json_strip_nulls(
             json_build_object(
-              'userName', graphuser.userName,
-              'person', graphuser.person
+              'userName', graphusers.userName,
+              'person', graphusers.person
             )
           ) AS "user"`
         ),
       )
       .leftJoin(
-        'piecesteps AS stp',
-        'pcs.id',
-        'usr.id',
+        'piecesteps',
+        'piecesteps.id',
+        'graphusers.id',
       )
       .leftJoin(
-        'graphusers AS usr',
-        'pcs.usr_id',
-        'usr.id',
+        'graphusers',
+        'piecesteps.graphusers_id',
+        'graphusers.id',
 
       )
-      .groupBy('pcs.id', 'usr.id')
+      .groupBy('assignedpieces.id', 'graphusers.id')
   },
 
   getById(db, id) {
@@ -38,27 +38,26 @@ const PiecesService = {
 
   getStepsForPieces(db, pieces_id) {
     return db
-      .from('piecesteps AS stp ')
+      .from('piecesteps')
       .select(
-        'stp.title',
-        'stp.content',
+        'piecesteps.title',
+        'piecesteps.content',
         db.raw(
           `json_strip_nulls(
             row_to_json(
               (SELECT * FROM (
-                SELECT * FROM
-                  usr.user,
-                  usr.person
-              ) graphuser)
+                  graphusers.user,
+                  graphusers.person
+              ) graphusers)
             )
           ) AS "user"`
         )
       )
-      .where('stp.piece_id', piece_id)
+      .where('piecesteps.piece_id', piece_id)
       .leftJoin(
-        'graphusers AS usr',
+        'graphusers',
       )
-      .groupBy('stp.id', 'usr.id')
+      .groupBy('piecesteps.id', 'graphusers.id')
   },
 
   serializePiece(piece) {
