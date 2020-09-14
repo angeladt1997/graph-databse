@@ -10,8 +10,8 @@ const PiecesService = {
         db.raw(
           `json_strip_nulls(
             json_build_object(
-              'user_name', usr.userName,
-              'full_name', usr.person
+              'userName', graphuser.userName,
+              'person', graphuser.person
             )
           ) AS "user"`
         ),

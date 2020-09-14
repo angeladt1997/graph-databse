@@ -7,14 +7,14 @@ const StepsService = {
       .select(
 
         'stp.title',
-        '.stp_content',
+        '.stp.content',
 
         db.raw(
           `json_strip_nulls(
             row_to_json(
               (SELECT tmp FROM (
-                  usr.title,
-                  usr.person
+                  graphuser.title,
+                  graphuser.person
               ) tmp)
             )
           ) AS "user"`
