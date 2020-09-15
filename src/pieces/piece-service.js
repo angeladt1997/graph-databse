@@ -10,8 +10,7 @@ const PiecesService = {
         db.raw(
           `json_strip_nulls(
             json_build_object(
-              'userName', graphusers.userName,
-              'person', graphusers.person
+              'userName', graphusers.userName
             )
           ) AS "user"`
         ),
@@ -23,7 +22,7 @@ const PiecesService = {
       )
       .leftJoin(
         'graphusers',
-        'piecesteps.graphusers_id',
+        'piecesteps.graphusers.id',
         'graphusers.id',
 
       )
@@ -46,8 +45,7 @@ const PiecesService = {
           `json_strip_nulls(
             row_to_json(
               (SELECT * FROM (
-                  graphusers.user,
-                  graphusers.person
+                  graphusers.user
               ) graphusers)
             )
           ) AS "user"`
@@ -69,8 +67,7 @@ const PiecesService = {
       number_of_steps: Number(piecesteps.content) || 0,
       piece: {
         id: assignedPieces.id,
-        user_name: graphuser.title,
-        full_name: graphuser.person
+        user_name: graphuser.userName
         },
     }
   },
@@ -83,8 +80,8 @@ const PiecesService = {
       content: xss(steps.content),
       user: {
         id: graphuser.id,
-        user_name: graphuser.title,
-        full_name: graphuser.person,
+        user_name: graphuser.userName,
+
       },
     }
   },

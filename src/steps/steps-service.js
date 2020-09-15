@@ -7,14 +7,13 @@ const StepsService = {
       .select(
 
         'piecesteps.title',
-        '.piecesteps.content',
+        'piecesteps.content',
 
         db.raw(
           `json_strip_nulls(
             row_to_json(
               (SELECT tmp FROM (
-                  graphuser.title,
-                  graphuser.person
+                  graphuser.userName
               ) tmp)
             )
           ) AS "user"`
@@ -49,8 +48,8 @@ const StepsService = {
       assignedpieces_id: piecesteps.assignedpieces_id,
       user: {
         id: user.id,
-        user_name: graphuser.title,
-        full_name: graphuser.person,
+        user_name: graphusers.userName
+
       },
     }
   }

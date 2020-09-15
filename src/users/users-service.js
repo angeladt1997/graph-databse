@@ -39,8 +39,7 @@ const UsersService = {
   serializeUser(user) {
     return {
       id: user.id,
-      full_name: xss(graphusers.person),
-      user_name: xss(graphusers.title)
+      full_name: xss(graphusers.userName)
     }
   },
 }
