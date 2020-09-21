@@ -31,7 +31,7 @@ const PiecesService = {
 
   getById(db, id) {
     return PiecesService.getAllPieces(db)
-      .where('pcs.id', id)
+      .where('assignedpieces.id', id)
       .first()
   },
 
