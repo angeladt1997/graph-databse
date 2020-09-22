@@ -18,10 +18,18 @@ app.use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common', {
 app.use(cors())
 app.use(helmet())
 
+app.get('/', function (req, res) {
+  res.render('index', {});
+});
+
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
 app.use('/api/steps', stepsRouter)
 app.use('/api/pieces', piecesRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
+
 
 app.use(function errorHandler(error, req, res, next) {
   let response
