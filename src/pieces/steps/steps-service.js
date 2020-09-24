@@ -13,7 +13,7 @@ const StepsService = {
           `json_strip_nulls(
             row_to_json(
               (SELECT tmp FROM (
-                  graphuser.userName
+                  graphusers.userName
               ) tmp)
             )
           ) AS "user"`

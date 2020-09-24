@@ -1,90 +1,47 @@
-const xss = require('xss')
+const jwt = require('jsonwebtoken')
+const config = require('../config')
 
-const PiecesService = {
-  getAllPieces(db) {
-    return db
-      .from('assignedpieces')
-      .select(
-        'assignedpieces.userName',
-        'assignedpieces.piece',
-        db.raw(
-          `json_strip_nulls(
-            json_build_object(
-              'userName', graphusers.userName
-            )
-          ) AS "user"`
-        ),
-      )
-      .leftJoin(
-        'piecesteps',
-        'piecesteps.id',
-        'graphusers.id',
-      )
-      .leftJoin(
-        'graphusers',
-        'piecesteps.graphusers.id',
-        'graphusers.id',
 
-      )
-      .groupBy('assignedpieces.id', 'graphusers.id')
+const PieceService = {
+  getPiecesWithUser(db, user) {
+    const pieces = db('assignedpieces')
+      .where({ user_id: user.id })
+      return (
+        pieces
+      );
   },
-
-  getById(db, id) {
-    return PiecesService.getAllPieces(db)
-      .where('assignedpieces.id', id)
+  getPiecesWithUserAndId(db, user, assignedpieces_id) {
+    const ship = db('assignedpieces')
+      .where({ user_id: user.id, id: assignedpieces.id })
       .first()
+      return (
+        ship
+      );
+  },
+  deletePiecesByUserAndId(db, user, assignedpieces_id) {
+    return db('user_ships')
+    .where({ user_id: user.id, id: parseInt(assignedpieces, 10) })
+    .delete()
   },
 
-  getStepsForPieces(db, pieces_id) {
-    return db
-      .from('piecesteps')
-      .select(
-        'piecesteps.title',
-        'piecesteps.content',
-        db.raw(
-          `json_strip_nulls(
-            row_to_json(
-              (SELECT * FROM (
-                  graphusers.user
-              ) graphusers)
-            )
-          ) AS "user"`
-        )
-      )
-      .where('piecesteps.piece_id', piece_id)
-      .leftJoin(
-        'graphusers',
-      )
-      .groupBy('piecesteps.id', 'graphusers.id')
+  createPieceForUser(db, user) {
+    return db('assignedpieces').insert({
+      user_id: user.id, 
+      piece_name: 'New Piece', 
+    })
+    .returning('*')
   },
-
-  serializePiece(piece) {
-    const { assignedpieces } = piece
-    return {
-      id: assignedpieces.id,
-      user: xss(assignedpieces.user),
-      piece: xss(assignedpieces.piece),
-      number_of_steps: Number(piecesteps.content) || 0,
-      piece: {
-        id: assignedPieces.id,
-        user_name: graphuser.userName
-        },
-    }
+  verifyJwt(token) {
+    return jwt.verify(token, config.JWT_SECRET, {
+      algorithms: ['HS256'],
+    })
   },
-
-  serializePieceSteps(steps) {
-    const { graphuser } = steps
-    return {
-      id: piecesteps.id,
-      piece_id: steps.piece_id,
-      content: xss(steps.content),
-      user: {
-        id: graphuser.id,
-        user_name: graphuser.userName,
-
-      },
-    }
+  parseBasicToken(token) {
+    return Buffer
+      .from(token, 'base64')
+      .toString()
+      .split(':')
   },
 }
 
-module.exports = PiecesService
+module.exports = PieceService

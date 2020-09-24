@@ -3,43 +3,42 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
-
 const { NODE_ENV } = require('./config')
-const piecesRouter = require('./pieces/piece-router')
-const stepsRouter = require('./steps/steps-router')
 const authRouter = require('./auth/auth-router')
 const usersRouter = require('./users/users-router')
+const pieceRouter = require('./pieces/piece-router')
+
 const app = express()
-const router = require
 
-app.use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common', {
-  skip: () => NODE_ENV === 'test',
-}))
-app.use(cors())
+
+const morganOption = (NODE_ENV === 'production')
+  ? 'tiny'
+  : 'common';
+app.use(morgan(morganOption))
+
 app.use(helmet())
+app.use(cors())
 
-app.get('/', function (req, res) {
-  res.render('index', {});
-});
-
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
-
-app.use('/api/steps', stepsRouter)
-app.use('/api/pieces', piecesRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/pieces', piecesRouter)
 
 
-app.use(function errorHandler(error, req, res, next) {
-  let response
-  if (NODE_ENV === 'production') {
-    response = { error: 'Server error' }
-  } else {
-    console.error(error)
-    response = { error: error.message, object: error }
-  }
-  res.status(500).json(response)
+const epStart = '/';
+const startupGreet = 'Let\'s get graphing!';
+app.get(epStart, (req, res) => {
+  res.send(startupGreet)
 })
 
-module.exports = app
+app.use(function errorHandler(error, req, res, next) {
+  let response;
+  if (NODE_ENV === 'production') {
+    response = { error: { message: "server error" } };
+  } else {
+    // console.error(error);
+    response = { error };
+  }
+  res.status(500).json(response);
+});
+
+module.exports = { app, epStart, startupGreet }

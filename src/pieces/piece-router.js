@@ -1,59 +1,85 @@
 const express = require('express')
-const PiecesService = require('./piece-service')
+const PieceService = require('./piece-service')
 const { requireAuth } = require('../middleware/jwt-auth')
+const stepList = require('./steps_lists')
 
-const piecesRouter = express.Router()
+const pieceRouter = express.Router()
+const jsonBodyParser = express.json()
 
-piecesRouter
+//const { stepList } = steps_lists
+
+pieceRouter
   .route('/')
-  .get((req, res, next) => {
-    PiecesService.getAllPieces(req.app.get('db'))
-      .then(pieces => {
-        res.json(pieces.map(PiecesService.serializePiece))
-      })
-      .catch(next)
-  })
-
-piecesRouter
-  .route('/:assignedPieces_id')
   .all(requireAuth)
-  .all(checkAssignedPiecesExists)
-  .get((req, res) => {
-    res.json(PiecesService.serializePiece(res.assignedpieces))
-  })
-
-piecesRouter.route('/:AssignedPieces_id/steps/')
-  .all(requireAuth)
-  .all(checkAssignedPiecesExists)
   .get((req, res, next) => {
-    PiecesService.getStepsForPieces(
+    PieceService.getPiecesWithUser( 
       req.app.get('db'),
-      req.params.pieces_id
-    )
-      .then(steps => {
-        res.json(steps.map(PiecesService.serializePieceSteps))
-      })
-      .catch(next)
+      req.user
+      )
+    .then(pieces => {
+      res.status(200).json(pieces);
+    })
+  })
+  .post(jsonBodyParser, (req, res, next) => {
+    PieceService.createPieceForUser( 
+      req.app.get('db'),
+      req.user
+      )
+    .then(piece => {
+      console.log(piece);
+      res.status(200).json(piece[0]);
+    })
   })
 
-/* async/await syntax for promises */
-async function checkAssignedPiecesExists(req, res, next) {
-  try {
-    const article = await PiecesService.getById(
+pieceRouter
+  .route('/:piece_id')
+  .all(requireAuth)
+  .get((req, res, next) => {
+    PieceService.getPiecesWithUserAndId( 
       req.app.get('db'),
-      req.params.assignedpieces_id
-    )
-
-    if (!assignedpieces)
-      return res.status(404).json({
-        error: `Piece doesn't exist`
-      })
-
-    res.assignedpieces = assginedpieces
-    next()
-  } catch (error) {
-    next(error)
-  }
+      req.user, req.params.piece_id
+      )
+    .then(piece => {
+      if(piece){
+        const stepsForPiece = (piecestepsTitle) => {
+          return {assignedpieces: piecesteps[piecestepsContent], 
+          
+      }
+    }
+      
+  
 }
+})
+pieceRouter
+  .delete((req, res, next) => {
+    PieceService.deletePieceByUserAndId( 
+      req.app.get('db'),
+      req.user, req.params.piece_id
+      )
+      .then(() =>
+        res.status(200).json({message: 'ok'})
+      )
+  })
 
-module.exports = piecesRouter
+
+pieceRouter
+  .route('/:piece_id')
+  .all(requireAuth)
+  .post(jsonBodyParser, (req, res, next) => {
+    const { piecestepsTitle, piecestepsContent } = req.body
+    
+    PieceService.changePieceStep( 
+      req.app.get('db'),
+      req.params.piece_id, piecestepsTitle, piecestepsContent
+    )
+
+    .then(piece => {
+      piece = piece[0]
+      if(piece){
+        piece[piecestepsTitle] = piecestepsContent
+       
+        }
+    })
+  })
+})   
+module.exports = pieceRouter; 

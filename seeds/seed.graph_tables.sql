@@ -3,8 +3,7 @@ BEGIN;
 TRUNCATE
     graphusers,
     piecesteps,
-    assignedpieces,
-    pieceoptions
+    assignedpieces
     RESTART IDENTITY CASCADE;
 
 INSERT INTO graphusers (username, password)
