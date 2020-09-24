@@ -1,7 +1,9 @@
 const AuthService = require('../auth/auth-service')
 
 function requireAuth(req, res, next) {
+  console.log("In require auth");
   const authToken = req.get('Authorization') || ''
+  console.log(authToken);
 
   let bearerToken
   if (!authToken.toLowerCase().startsWith('bearer ')) {
@@ -17,11 +19,11 @@ function requireAuth(req, res, next) {
       req.app.get('db'),
       payload.sub,
     )
-      .then(graphuser => {
-        if (!graphuser)
+      .then(user => {
+        if (!user)
           return res.status(401).json({ error: 'Unauthorized request' })
 
-        req.graphuser = graphuser
+        req.user = user
         next()
       })
       .catch(err => {
@@ -35,4 +37,4 @@ function requireAuth(req, res, next) {
 
 module.exports = {
   requireAuth,
-}                                                                       
+}
