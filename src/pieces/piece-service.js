@@ -11,7 +11,7 @@ const PieceService = {
       );
   },
   getPiecesWithUserAndId(db, user, assignedpieces_id) {
-    const ship = db('assignedpieces')
+    const pieces = db('assignedpieces')
       .where({ user_id: user.id, id: assignedpieces.id })
       .first()
       return (
@@ -19,7 +19,7 @@ const PieceService = {
       );
   },
   deletePiecesByUserAndId(db, user, assignedpieces_id) {
-    return db('user_ships')
+    return db('user_pieces')
     .where({ user_id: user.id, id: parseInt(assignedpieces, 10) })
     .delete()
   },
