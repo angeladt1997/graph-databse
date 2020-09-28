@@ -7,17 +7,26 @@ const authRouter = express.Router()
 const jsonBodyParser = express.json()
 
 authRouter
+
+  .post('/loginTwo', jsonBodyParser, (req, res, next) => {
+  req.app.get('db')('graphusers').select().then(data =>
+    console.log(data))
+  res.send()
+  })
+
   .post('/login', jsonBodyParser,(req, res, next) => {
     
     const { username, password } = req.body
     const loginUser = { username, password }
+    //console.log({username, password})
 
-    for (const [key, value] of Object.entries(loginUser))
-      if (value == null)
+    for (const [key, value] of Object.entries(loginUser)) {
+      if (value == null) {
         return res.status(400).json({
           error: `Missing '${key}' in request body`
-        })
-    
+        })}
+    }
+
     AuthService.getUserWithUserName(
       req.app.get('db'),
       loginUser.username

@@ -8,10 +8,12 @@ TRUNCATE
 
 INSERT INTO graphusers (username, password)
 VALUES
-    ('GrapherOne', 'passwordOne'),
-    ('GrapherTwo', 'passwordTwo'),
+    ('GrapherOne', '$2a$10$l7iIvtFcIuTLVlI5HMGsnuBGKGM0a1nu0c.l3hvLWreXJPyMcpiy2
+'),
+    ('GrapherTwo', '$2a$05$xEMG8pU30nOMdX3FF/wGgefXI6PIydjXXugn53yQGvZyi7NMKeYPK
+'),
     ('GrapherThree', 'passwordThree'),
-    ('GrapherFour', 'passwordFour');
+    ('GrapherFour', 'paswordFour');
 
 
 INSERT INTO assignedpieces  (user_id, userName, piece)
