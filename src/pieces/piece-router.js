@@ -6,7 +6,7 @@ const stepList = require('./steps_lists')
 const pieceRouter = express.Router()
 const jsonBodyParser = express.json()
 
-//const { stepList } = steps_lists
+
 
 pieceRouter
   .route('/')

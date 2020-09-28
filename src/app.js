@@ -10,7 +10,7 @@ const express = require('express');
 
  const app = express()
 
-// // LEARN: The example option has a skip at the end. Do I need that?
+
 const morganOption = (NODE_ENV === 'production')
    ? 'tiny'
    : 'common';
