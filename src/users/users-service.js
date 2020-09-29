@@ -22,7 +22,7 @@ const UsersService = {
       return 'Password must be longer than 8 characters'
     }
     if (password.length > 80) {
-      return 'Password must be less than 72 characters'
+      return 'Password must be less than 80 characters'
     }
     if (password.startsWith(' ') || password.endsWith(' ')) {
       return 'Password must not start or end with empty spaces'
