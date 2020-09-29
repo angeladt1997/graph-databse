@@ -8,21 +8,21 @@ const UsersService = {
     return db('graphusers')
       .where({ username })
       .first()
-      .then(user => !!user)
+      .then(graphusers => !!graphusers)
   },
   insertUser(db, newUser) {
     return db
       .insert(newUser)
       .into('graphusers')
       .returning('*')
-      .then(([user]) => user)
+      .then(([graphusers]) => graphusers)
   },
   validatePassword(password) {
     if (password.length < 8) {
       return 'Password must be longer than 8 characters'
     }
     if (password.length > 80) {
-      return 'Password must be less than 72 characters'
+      return 'Password must be less than 80 characters'
     }
     if (password.startsWith(' ') || password.endsWith(' ')) {
       return 'Password must not start or end with empty spaces'
