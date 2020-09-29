@@ -2,7 +2,7 @@ Choreo-Graph
 
 Welcome to Choreo-Graph!
 
-You can find this project deployed at:
+You can find this project deployed at: https://choreo-graph.vercel.app/
 
 API documentation:
 Screenshots of app:
