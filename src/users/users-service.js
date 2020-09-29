@@ -8,14 +8,14 @@ const UsersService = {
     return db('graphusers')
       .where({ username })
       .first()
-      .then(user => !!user)
+      .then(graphusers => !!graphusers)
   },
   insertUser(db, newUser) {
     return db
       .insert(newUser)
       .into('graphusers')
       .returning('*')
-      .then(([user]) => user)
+      .then(([graphusers]) => graphusers)
   },
   validatePassword(password) {
     if (password.length < 8) {
