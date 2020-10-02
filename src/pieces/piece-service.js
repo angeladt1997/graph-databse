@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+// jwt = require('jsonwebtoken')
 const config = require('../config')
 
 
@@ -15,7 +15,7 @@ const PieceService = {
       .where({ user_id: user.id, id: assignedpieces.id })
       .first()
       return (
-        piece
+        pieces
       );
   },
   deletePiecesByUserAndId(db, user, assignedpieces) {
@@ -27,7 +27,7 @@ const PieceService = {
   createPieceForUser(db, user) {
     return db('assignedpieces').insert({
       user_id: user.id, 
-      piece_name: 'New Piece', 
+      assignedpieces_piece: 'New Piece', 
     })
     .returning('*')
   },
