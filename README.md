@@ -3,6 +3,7 @@ Choreo-Graph
 Welcome to Choreo-Graph!
 
 You can find this project deployed at: https://choreo-graph.vercel.app/
+You can find the database at: https://choreo-graph-database.herokuapp.com/
 
 API documentation:
 Screenshots of app:
