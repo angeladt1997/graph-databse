@@ -1,6 +1,6 @@
 const express = require('express')
 const PieceService = require('./piece-service')
-const { requireAuth } = require('../middleware/jwt-auth')
+//const { requireAuth } = require('../middleware/jwt-auth')
 const stepList = require('./steps_lists')
 
 const pieceRouter = express.Router()
@@ -10,7 +10,7 @@ const jsonBodyParser = express.json()
 
 pieceRouter
   .route('/')
-  .all(requireAuth)
+  //.all(requireAuth)
   .get((req, res, next) => {
     PieceService.getPiecesWithUser( 
       req.app.get('db'),
@@ -33,11 +33,11 @@ pieceRouter
 
 pieceRouter
   .route('/:piece_id')
-  .all(requireAuth)
+  //.all(requireAuth)
   .get((req, res, next) => {
     PieceService.getPiecesWithUserAndId( 
       req.app.get('db'),
-      req.user, req.params.piece_id
+      req.user, req.params.assignedpieces.id
       )
     .then(piece => {
       if(piece){
@@ -64,16 +64,16 @@ pieceRouter
 
 pieceRouter
   .route('/:piece_id')
-  .all(requireAuth)
+  //.all(requireAuth)
   .post(jsonBodyParser, (req, res, next) => {
     const { piecestepsTitle, piecestepsContent } = req.body
     
     PieceService.changePieceStep( 
       req.app.get('db'),
-      req.params.piece_id, piecestepsTitle, piecestepsContent
+      req.params.piecesteps.id, piecestepsTitle, piecestepsContent
     )
 
-    .then(piece => {
+    .then(assignedpieces => {
       piece = piece[0]
       if(piece){
         piece[piecestepsTitle] = piecestepsContent

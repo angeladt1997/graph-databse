@@ -10,15 +10,15 @@ const PieceService = {
         pieces
       );
   },
-  getPiecesWithUserAndId(db, user, assignedpieces_id) {
+  getPiecesWithUserAndId(db, user, assignedpieces) {
     const pieces = db('assignedpieces')
       .where({ user_id: user.id, id: assignedpieces.id })
       .first()
       return (
-        ship
+        piece
       );
   },
-  deletePiecesByUserAndId(db, user, assignedpieces_id) {
+  deletePiecesByUserAndId(db, user, assignedpieces) {
     return db('user_pieces')
     .where({ user_id: user.id, id: parseInt(assignedpieces, 10) })
     .delete()
@@ -31,11 +31,11 @@ const PieceService = {
     })
     .returning('*')
   },
-  verifyJwt(token) {
-    return jwt.verify(token, config.JWT_SECRET, {
-      algorithms: ['HS256'],
-    })
-  },
+  // verifyJwt(token) {
+  //   //return jwt.verify(token, config.JWT_SECRET, {
+  //     algorithms: ['HS256'],
+  //   })
+  // },
   parseBasicToken(token) {
     return Buffer
       .from(token, 'base64')

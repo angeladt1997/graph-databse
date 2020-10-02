@@ -1,16 +1,9 @@
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+//const jwt = require('jsonwebtoken')
 const config = require('../config')
 
 
-// async function hashPassword(password) {
-//   const salt = await
-//   bcrypt.genSalt(5)
-//   const hash = await
-//   bcrypt.hash(password, salt)
-//     console.log(hash)
-// }
-// hashPassword('grapherTwo', 'grapherOne', 'grapherThree', 'grapherFour')
+
 
 const AuthService = {
   getUserWithUserName(db, username) {
@@ -21,17 +14,17 @@ const AuthService = {
   comparePasswords(password, hash) {
     return bcrypt.compare(password, hash)
   },
-  createJwt(subject, payload) {
-    return jwt.sign(payload, config.JWT_SECRET, {
-      subject,
-      algorithm: 'HS256',
-    })
-  },
-  verifyJwt(token) {
-    return jwt.verify(token, config.JWT_SECRET, {
-      algorithms: ['HS256'],
-    })
-  },
+  // createJwt(subject, payload) {
+  //   return jwt.sign(payload, config.JWT_SECRET, {
+  //     subject,
+  //     algorithm: 'HS256',
+  //   })
+  // },
+  // verifyJwt(token) {
+  //   return jwt.verify(token, config.JWT_SECRET, {
+  //     algorithms: ['HS256'],
+  //   })
+  // },
   parseBasicToken(token) {
     return Buffer
       .from(token, 'base64')
