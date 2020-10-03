@@ -1,4 +1,4 @@
-// jwt = require('jsonwebtoken')
+jwt = require('jsonwebtoken')
 const config = require('../config')
 
 
@@ -10,32 +10,32 @@ const PieceService = {
         pieces
       );
   },
-  getPiecesWithUserAndId(db, user, assignedpieces) {
+  getPiecesWithUserAndId(db, graphusers, assignedpieces) {
     const pieces = db('assignedpieces')
-      .where({ user_id: user.id, id: assignedpieces.id })
+      .where({ user_id: graphusers.id, id: assignedpieces.id })
       .first()
       return (
         pieces
       );
   },
-  deletePiecesByUserAndId(db, user, assignedpieces) {
-    return db('user_pieces')
-    .where({ user_id: user.id, id: parseInt(assignedpieces, 10) })
-    .delete()
-  },
-
-  createPieceForUser(db, user) {
-    return db('assignedpieces').insert({
-      user_id: user.id, 
-      assignedpieces_piece: 'New Piece', 
-    })
-    .returning('*')
-  },
-  // verifyJwt(token) {
-  //   //return jwt.verify(token, config.JWT_SECRET, {
-  //     algorithms: ['HS256'],
-  //   })
+  // deletePiecesByUserAndId(db, user, assignedpieces) {
+  //   return db('user_pieces')
+  //   .where({ user_id: user.id, id: parseInt(assignedpieces, 10) })
+  //   .delete()
   // },
+
+  // createPieceForUser(db, user) {
+  //   return db('assignedpieces').insert({
+  //     user_id: user.id, 
+  //     assignedpieces_piece: 'New Piece', 
+  //   })
+  //   .returning('*')
+  // },
+  verifyJwt(token) {
+    return jwt.verify(token, config.JWT_SECRET, {
+      algorithms: ['HS256'],
+    })
+  },
   parseBasicToken(token) {
     return Buffer
       .from(token, 'base64')

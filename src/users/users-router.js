@@ -1,14 +1,13 @@
-  
 const express = require('express')
 const path = require('path')
 const UsersService = require('./users-service')
 
-const UsersRouter = express.Router()
+const usersRouter = express.Router()
 const jsonBodyParser = express.json()
 
-UsersRouter
-  .post('/', jsonBodyParser, async (req, res, next) => {
-    const { password, username, } = req.body
+usersRouter
+  .post('/', jsonBodyParser, (req, res, next) => {
+    const { password, username} = req.body
 
     for (const field of ['username', 'password'])
       if (!req.body[field])
@@ -16,40 +15,41 @@ UsersRouter
           error: `Missing '${field}' in request body`
         })
 
-    const passwordError = await UsersService.validatePassword(password)
-    // const passwordError = UsersService.validatePassword(password)
+    // TODO: check user_name doesn't start with spaces
+
+    const passwordError = UsersService.validatePassword(password)
 
     if (passwordError)
-      return res.status(400).json({ error: passwordError }) 
-    
-    try{
-      const hasUserWithUserName = await UsersService.hasUserWithUserName(
-        req.app.get('db'),
-        username
-      )
-      if (hasUserWithUserName){
-        return res.status(400).json({ error: `Username already taken` })
-      }
+      return res.status(400).json({ error: passwordError })
 
-      const hashedPassword = await UsersService.hashPassword(password)
+    UsersService.hasUserWithUserName(
+      req.app.get('db'),
+      username
+    )
+      .then(hasUserWithUserName => {
+        if (hasUserWithUserName)
+          return res.status(400).json({ error: `Username already taken` })
 
-    
-      const newUser = {
-        username,
-        password: hashedPassword,
-      }
-      const user = await UsersService.insertUser(
-        req.app.get('db'),
-        newUser
-      )
-      return res
-        .status(201)
-        .location(path.posix.join(req.originalUrl, `/${user.id}`))
-        .json(UsersService.serializeUser(user))
+        return UsersService.hashPassword(password)
+          .then(hashedPassword => {
+            const newUser = {
+              username,
+              password: hashedPassword
+            }
 
-    } catch(e) {
-      return next;
-    }
+            return UsersService.insertUser(
+              req.app.get('db'),
+              newUser
+            )
+              .then(graphusers => {
+                res
+                  .status(201)
+                  .location(path.posix.join(req.originalUrl, `/${graphusers.id}`))
+                  .json(UsersService.serializeUser(graphusers))
+              })
+          })
+      })
+      .catch(next)
   })
 
-module.exports = UsersRouter
+module.exports = usersRouter
