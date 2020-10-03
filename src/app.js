@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
  const morgan = require('morgan');
+ const chai = require('chai');
  const cors = require('cors');
  const helmet = require('helmet');
  const { NODE_ENV } = require('./config');
@@ -18,6 +19,7 @@ app.use(morgan(morganOption))
 
 app.use(helmet())
 app.use(cors())
+app.use(chai())
 
  app.use('/api/auth', authRouter)
  app.use('/api/graphusers', usersRouter)

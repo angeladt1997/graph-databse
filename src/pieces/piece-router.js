@@ -5,7 +5,7 @@ const { requireAuth } = require('../middleware/jwt-auth')
 //const stepList = require('./steps_lists')
 
 const pieceRouter = express.Router()
-//const jsonBodyParser = express.json()
+const jsonBodyParser = express.json()
 
 
 
