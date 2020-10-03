@@ -1,4 +1,5 @@
-require('dotenv').config()
+require('dotenv').config();
+const chai = require('chai');
 
 const knex = require('knex')
 const { app } = require('./app')
