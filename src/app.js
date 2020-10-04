@@ -18,7 +18,7 @@ app.use(morgan(morganOption))
 
 app.use(helmet())
 app.use(cors())
-app.use(chai())
+
 
  app.use('/api/auth', authRouter)
  app.use('/api/graphusers', usersRouter)
@@ -43,3 +43,5 @@ const epStart = '/';
  });
 
  module.exports = { app, epStart, startupGreet }
+
+
