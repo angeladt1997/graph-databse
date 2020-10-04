@@ -8,21 +8,21 @@ const UsersService = {
     return db('graphusers')
       .where({ username })
       .first()
-      .then(graphusers => !!graphusers)
+      .then(user => !!user)
   },
   insertUser(db, newUser) {
     return db
       .insert(newUser)
       .into('graphusers')
       .returning('*')
-      .then(([graphusers]) => graphusers)
+      .then(([user]) => user)
   },
   validatePassword(password) {
     if (password.length < 8) {
-      return 'Password be longer than 8 characters'
+      return 'Password must be longer than 8 characters'
     }
     if (password.length > 72) {
-      return 'Password be less than 72 characters'
+      return 'Password must be less than 72 characters'
     }
     if (password.startsWith(' ') || password.endsWith(' ')) {
       return 'Password must not start or end with empty spaces'
@@ -35,12 +35,12 @@ const UsersService = {
   hashPassword(password) {
     return bcrypt.hash(password, 12)
   },
-  serializeUser(graphusers) {
+  serializeUser(user) {
     return {
-      id: graphusers.id,
-      username: xss(graphusers.username),
+      id: user.id,
+      username: xss(user.username),
     }
-  },
+  }
 }
 
 module.exports = UsersService
