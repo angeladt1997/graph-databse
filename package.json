@@ -3,5 +3,43 @@
 	"version": "0.0.1",
 	"description": "Starter code for learning about authentication.",
 	"private": true,
-	"main": "src/server.js"
+	"main": "src/server.js",
+	"scripts": {
+		"test": "mocha --require test/setup.js",
+		"dev": "nodemon src/server.js",
+		"migrate": "postgrator --config postgrator-config.js",
+		"migrate:test": "env NODE_ENV=test npm run migrate",
+		"migrate:production": "env SSL=true DATABASE_URL='postgres://oqnsdeyvufhbvy:6e860fee3dce2358a530527cabfbd8244ec01a9e52fa2caa9b06fbf04c273a2e@ec2-52-21-247-176.compute-1.amazonaws.com:5432/d6mhvt44r8ip7c' npm run migrate",
+		"start": "node src/server.js",
+		"predeploy": "npm audit && npm run migrate:production",
+		"deploy": "git push heroku master",
+		"postdeploy": "npm run migrate:production",
+		"seed": "psql -U admin -d logbook -f ./seeds/seed.logbook-tables.sql",
+		"seed:production": "pg:psql -f ./seeds/seed.logbook-tables.sql"
+	},
+	"keywords": [],
+	"engines": {
+		"node": "12.18.3"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"cors": "^2.8.5",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"helmet": "^4.0.0",
+		"jsonwebtoken": "^8.5.1",
+		"knex": "^0.21.5",
+		"morgan": "^1.10.0",
+		"pg": "^8.3.3",
+		"postgrator-cli": "^3.2.0",
+		"xss": "^1.0.8"
+	},
+	"devDependencies": {
+		"chai": "^4.2.0",
+		"mocha": "^8.1.1",
+		"nodemon": "^2.0.4",
+		"supertest": "^4.0.2"
+	}
 }
