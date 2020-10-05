@@ -1,43 +1,32 @@
 const bcrypt = require('bcryptjs')
 
-function makeUsersArray() {
+function makeGraphusersArray() {
   return [
     {
       id: 1,
-      user_name: 'test-user-1',
-      full_name: 'Test user 1',
-      nickname: 'TU1',
+      username: 'test-user-1',
       password: 'password',
-      date_created: '2029-01-22T16:28:32.615Z',
     },
     {
       id: 2,
-      user_name: 'test-user-2',
-      full_name: 'Test user 2',
-      nickname: 'TU2',
-      password: 'password',
-      date_created: '2029-01-22T16:28:32.615Z',
+      username: 'test-user-2',    
+      password: 'password'
+      
     },
     {
       id: 3,
-      user_name: 'test-user-3',
-      full_name: 'Test user 3',
-      nickname: 'TU3',
-      password: 'password',
-      date_created: '2029-01-22T16:28:32.615Z',
+      username: 'test-user-3',
+      password: 'password'
     },
     {
       id: 4,
-      user_name: 'test-user-4',
-      full_name: 'Test user 4',
-      nickname: 'TU4',
-      password: 'password',
-      date_created: '2029-01-22T16:28:32.615Z',
+      username: 'test-user-4',
+      password: 'password'
     },
   ]
 }
 
-function makeUsersArray(users) {
+function makeGraphusersArray(graphusers) {
   return [
     {
       id: 1,
@@ -62,7 +51,7 @@ function makeUsersArray(users) {
   ]
 }
 
-function makeMaliciousThing(user) {
+function makeMaliciousThing(graphusers) {
   const maliciousThing = {
     id: 911,
     image: 'http://placehold.it/500x500',
@@ -72,7 +61,7 @@ function makeMaliciousThing(user) {
     content: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`,
   }
   const expectedThing = {
-    ...makeExpectedThing([user], maliciousThing),
+    ...makeExpectedThing([graphusers], maliciousThing),
     title: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
     content: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`,
   }
@@ -91,10 +80,10 @@ function cleanTables(db) {
   )
 }
 
-function seedUsers(db, users) {
-  const preppedUsers = users.map(user => ({
-    ...user,
-    password: bcrypt.hashSync(user.password, 1)
+function seedUsers(db, graphusers) {
+  const preppedUsers = graphusers.map(graphusers => ({
+    ...graphusers,
+    password: bcrypt.hashSync(graphusers.password, 1)
   }))
   return db.into('graphusers').insert(preppedUsers)
     .then(() =>
@@ -105,9 +94,9 @@ function seedUsers(db, users) {
     )
 }
 
-function seedChoreographTables(db, graphusers, assignedpieces, piecesteps = []) {
+function seedGraphTables(db, graphusers, assignedpieces, piecesteps = []) {
   return db.transaction(async trx => {
-    await seedUsers(trx, graphusers)
+    await seedGraphusers(trx, graphusers)
     await trx.into('assignedpieces').insert(piecesteps)
     await trx.raw(
       `SELECT setval('graphusers_id_seq', ?)`,
@@ -117,7 +106,7 @@ function seedChoreographTables(db, graphusers, assignedpieces, piecesteps = []) 
 }
 
 
-function seedMaliciousChoreograph(db, graphusers, assignedpieces) {
+function seedMaliciousChoreograph(db, graphusers) {
   return seedUsers(db, [graphusers])
     .then(() =>
       db
@@ -127,14 +116,14 @@ function seedMaliciousChoreograph(db, graphusers, assignedpieces) {
 }
 
 
-function makeAuthHeader(user) {
+function makeAuthHeader(graphusers) {
   const token = Buffer.from(`${graphusers.username}:${graphusers.password}`).toString('base64')
   return `Basic ${token}`
 }
 
 module.exports = {
-  makeUsersArray,
-  
+  makeGraphusersArray,
+  makeAuthHeader,
   makeMaliciousThing,
 
   cleanTables,

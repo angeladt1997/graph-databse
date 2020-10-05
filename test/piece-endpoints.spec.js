@@ -9,7 +9,7 @@ describe('Pieces endpoint', function() {
   const {
     testUsers,
     testPieces,
-  } = helpers.makeArticlesFixtures()
+  } = helpers.makeGraphusersFixtures()
 
   before('make knex instance', () => {
     db = knex({
@@ -27,7 +27,7 @@ describe('Pieces endpoint', function() {
 
   describe(`POST /api/piece`, () => {
     beforeEach('insert users', () =>
-      helpers.seedUsers(
+      helpers.seedGraphusers(
         db,
         testUsers,
       )

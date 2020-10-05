@@ -14,7 +14,7 @@ describe('Pieces Endpoints', function() {
   
     after('disconnect from db', () => db.destroy())
   
-    before('clean the table', () => db('pieces').truncate())
+    before('clean the table', () => db('assignedpieces').truncate())
   
   })
 

@@ -6,7 +6,7 @@ const helpers = require('./test-helpers')
 describe('User Endpoints', function() {
   let db
   
-  const { testUsers } = helpers.makeArticlesFixtures()
+  const { testUsers } = helpers.makeGraphusersFixtures()
   const testUser = testUsers[0]
 
   before('make knex instance', () => {
@@ -54,8 +54,8 @@ describe('User Endpoints', function() {
         it(`responds 400 'Password must be longer than 8 characters' when empty password`, () => {
           const userShortPassword = {
             username: 'test username',
-            password: '1234567',
-            full_name: 'test full_name',
+            password: '1234567'
+            
           }
           return supertest(app)
             .post('/api/users')
@@ -66,8 +66,8 @@ describe('User Endpoints', function() {
         it(`responds 400 'Password must be less than 72 characters' when long password`, () => {
           const userLongPassword = {
             username: 'test username',
-            password: '*'.repeat(73),
-            full_name: 'test full_name',
+            password: '*'.repeat(73)
+          
           }
           return supertest(app)
             .post('/api/users')
@@ -78,8 +78,8 @@ describe('User Endpoints', function() {
         it(`responds 400 error when password starts with spaces`, () => {
           const userPasswordStartsSpaces = {
             username: 'test username',
-            password: ' 1Aa!2Bb@',
-            full_name: 'test full_name',
+            password: ' 1Aa!2Bb@'
+      
           }
           return supertest(app)
             .post('/api/users')
@@ -90,8 +90,8 @@ describe('User Endpoints', function() {
         it(`responds 400 error when password ends with spaces`, () => {
           const userPasswordEndsSpaces = {
             username: 'test username',
-            password: '1Aa!2Bb@ ',
-            full_name: 'test full_name',
+            password: '1Aa!2Bb@ '
+            
           }
           return supertest(app)
             .post('/api/users')
@@ -102,8 +102,8 @@ describe('User Endpoints', function() {
         it(`responds 400 error when password isn't complex enough`, () => {
           const userPasswordNotComplex = {
             username: 'test username',
-            password: '11AAaabb',
-            full_name: 'test full_name',
+            password: '11AAaabb'
+            
           }
           return supertest(app)
             .post('/api/users')
@@ -114,8 +114,8 @@ describe('User Endpoints', function() {
         it(`responds 400 'User name already taken' when username isn't unique`, () => {
           const duplicateUser = {
             username: testUser.username,
-            password: '11AAaa!!',
-            full_name: 'test full_name',
+            password: '11AAaa!!'
+            
           }
           return supertest(app)
             .post('/api/users')
